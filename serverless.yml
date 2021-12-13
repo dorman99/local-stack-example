@@ -1,0 +1,34 @@
+service: myservice
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+
+stage: dev
+region: us-east-2
+
+
+functions:
+  incoming:
+    memorySize: 128
+    timeout: 120
+    handler: sns-subscriber/sns.hello.greeting
+    name: sns-new-message-dev
+    events:
+      - sns:
+          arn: arn:aws:sns:us-east-2:000000000000:test-local
+  hello:
+    handler: handler.hello
+
+plugins:
+  - serverless-offline-sns
+  - serverless-offline
+custom:
+  serverless-offline-sns:
+    debug: true
+    host: localhost
+    port: 4566 # a free port for the sns server to run on
+    # host: 0.0.0.0 # Optional, defaults to 127.0.0.1 if not provided to serverless-offline
+    # sns-endpoint: http://127.0.0.1:4002 # Optional. Only if you want to use a custom endpoint
