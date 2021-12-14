@@ -11,14 +11,24 @@ region: us-east-2
 
 
 functions:
+  main:
+    handler: handler.handler
+    events:
+      - http: 
+          method: get
+          path: /check-health
+      - http: 
+          method: post
+          path: /generate-upload-image-url
+      - http:
+          method: post
+          path: /upload-static
   incoming:
-    memorySize: 128
-    timeout: 120
     handler: sns-subscriber/sns.hello.greeting
     name: sns-new-message-dev
     events:
       - sns:
-          arn: arn:aws:sns:us-east-2:000000000000:test-local
+          arn: arn:aws:sns:us-east-1:000000000000:new-topic
   hello:
     handler: handler.hello
 
@@ -29,6 +39,6 @@ custom:
   serverless-offline-sns:
     debug: true
     host: localhost
-    port: 4566 # a free port for the sns server to run on
+    port: 4561 # a free port for the sns server to run on
     # host: 0.0.0.0 # Optional, defaults to 127.0.0.1 if not provided to serverless-offline
     # sns-endpoint: http://127.0.0.1:4002 # Optional. Only if you want to use a custom endpoint

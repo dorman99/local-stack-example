@@ -1,8 +1,8 @@
 const AWS = require('aws-sdk');
 
 const sns = new AWS.SNS({
-  endpoint: 'http://127.0.0.1:4566/sns-new-message-dev',
-  region: 'us-east-2',
+  endpoint: 'http://127.0.0.1:4561/sns-new-message-dev', // port sns local porject
+  region: 'us-east-1',
 });
 
 sns.publish(
@@ -12,7 +12,7 @@ sns.publish(
       message: "new message!"
     }),
     MessageStructure: 'json',
-    TopicArn: `arn:aws:sns:us-east-2:000000000000:test-local`,
+    TopicArn: `arn:aws:sns:us-east-1:000000000000:new-topic`,
   }
 ).promise().then(resp => {
   console.log("Success");
